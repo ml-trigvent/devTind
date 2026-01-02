@@ -1,18 +1,27 @@
-const express = require('express')
+const express = require("express");
 
 const app = express();
 
-app.use((req, res)=> {
-    res.send("Hello from dhdfui")
-    })
-    app.use("/teste",(req, res)=> {
-        res.send("Hello from serve Zsfsr")
-        });
+app.use("/admin", (req, res, next) => {
+    console.log("admin auth is checking")
+  const token = "xyg11";
+  const isAuthorized = token == "xyg";
+  console.log(isAuthorized)
+  if (!isAuthorized) {
+    res.status(404).send("admin not found");
+  } else {
+    next();
+  }
+});
 
-app.use("/test",(req, res)=> {
-res.send("Hello from server")
+app.get("/admin/getallData", (req, res) => {
+  res.send("admin data");
+});
+
+app.get("/admin/deleteUser", (req, res) => {
+  res.send("delete a user data data");
 });
 
 app.listen(3000, () => {
-    console.log("server running on 3000 port")
-})
+  console.log("server running on 3000 port");
+});
