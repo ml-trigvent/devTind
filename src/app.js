@@ -2,17 +2,11 @@ const express = require("express");
 
 const app = express();
 
-app.use("/admin", (req, res, next) => {
-    console.log("admin auth is checking")
-  const token = "xyg11";
-  const isAuthorized = token == "xyg";
-  console.log(isAuthorized)
-  if (!isAuthorized) {
-    res.status(404).send("admin not found");
-  } else {
-    next();
-  }
-});
+const { adminAuth, userAuth } = require("./middlewares/auth")
+
+app.use("/admin", adminAuth)
+app.use("/user", userAuth)
+
 
 app.get("/admin/getallData", (req, res) => {
   res.send("admin data");
@@ -21,6 +15,11 @@ app.get("/admin/getallData", (req, res) => {
 app.get("/admin/deleteUser", (req, res) => {
   res.send("delete a user data data");
 });
+
+app.get("/user", (req, res) => {
+  res.send("this is my user");
+});
+
 
 app.listen(3000, () => {
   console.log("server running on 3000 port");
